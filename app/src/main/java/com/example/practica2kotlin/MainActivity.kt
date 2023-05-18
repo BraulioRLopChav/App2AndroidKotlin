@@ -25,17 +25,18 @@ class MainActivity : AppCompatActivity() {
         val pesoString = pesoEditText.text.toString()
         val alturaString = alturaEditText.text.toString()
 
-        if (pesoString.isEmpty() || alturaString.isEmpty()) {
-            Toast.makeText(applicationContext,"Ingresa el Peso y la Altura",Toast.LENGTH_LONG).show()
+        if (!pesoString.isEmpty() && !alturaString.isEmpty()) {
+            try {
+                val peso = pesoString.toDouble()
+                val altura = alturaString.toDouble()
+
+                val imc = peso / (altura * altura)
+                resultadoTextView.text = String.format("Tu IMC es: %.2f kg/m²", imc)
+            } catch (e: NumberFormatException) {
+                Toast.makeText(applicationContext,"Ingresa el Peso y la Altura",Toast.LENGTH_LONG).show()
+            }
         } else {
-            val peso = pesoString.toFloat()
-            val altura = alturaString.toFloat() / 100
-
-            val imc = peso / (altura * altura)
-            val df = DecimalFormat("#.##")
-            val imcRedondeado = df.format(imc)
-
-            resultadoTextView.text = String.format("Tu IMC es: %s kg/m²", imcRedondeado)
+            Toast.makeText(applicationContext,"Ingresa el Peso y la Altura",Toast.LENGTH_LONG).show()
         }
     }
 
